@@ -213,6 +213,11 @@ class Game {
         this.resetGame();
         this.setupEventListeners();
         this.gameLoop();
+        this.updateScoreDisplay();
+    }
+
+    updateScoreDisplay() {
+        document.getElementById('score').textContent = `Score: ${this.score}`;
     }
 
     resetGame() {
@@ -227,6 +232,7 @@ class Game {
         this.generateObstacles();
         this.gameOver = false;
         document.getElementById('game-over').style.display = 'none';
+        this.updateScoreDisplay();
     }
 
     generateObstacles() {
@@ -235,7 +241,7 @@ class Game {
             let attempts = 0;
             while (attempts < 100) {
                 const x = Math.random() * (WINDOW_WIDTH - CAR_HEIGHT - 200) + 100;
-                const y = Math.random() * (WINDOW_HEIGHT - 250) + 150;
+                const y = Math.random() * (WINDOW_HEIGHT * 0.4) + (WINDOW_HEIGHT * 0.3);
                 const color = obstacleColors[Math.floor(Math.random() * obstacleColors.length)];
                 const obstacle = new ObstacleCar(x, y, color);
                 
@@ -308,7 +314,7 @@ class Game {
         if (this.checkCollision(carRect, this.parkingSpot)) {
             if (Math.abs(this.car.angle) < 10 || Math.abs(this.car.angle - 360) < 10) {
                 this.score++;
-                document.getElementById('score').textContent = `Score: ${this.score}`;
+                this.updateScoreDisplay();
                 this.resetGame();
             }
         }
